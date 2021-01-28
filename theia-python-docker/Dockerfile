@@ -1,6 +1,6 @@
 ARG NODE_VERSION=12.20.1
 
-FROM node:${NODE_VERSION}
+FROM node:${NODE_VERSION} as builder
 ARG version=latest
 WORKDIR /home/theia
 ADD $version.package.json ./package.json
@@ -53,7 +53,7 @@ RUN mkdir -p /home/theia \
     && mkdir -p /home/project
 ENV HOME /home/theia
 WORKDIR /home/theia
-COPY --from=0 /home/theia /home/theia
+COPY --from=builder /home/theia /home/theia
 EXPOSE 3000
 ENV SHELL=/bin/bash \
     THEIA_DEFAULT_PLUGINS=local-dir:/home/theia/plugins

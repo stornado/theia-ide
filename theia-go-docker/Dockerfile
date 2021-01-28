@@ -1,6 +1,6 @@
 ARG NODE_VERSION=erbium
 
-FROM node:$NODE_VERSION as theia
+FROM node:$NODE_VERSION-alpine as theia
 
 ARG GITHUB_TOKEN
 ARG version=latest
@@ -19,7 +19,7 @@ RUN yarn --pure-lockfile && \
     yarn autoclean --force && \
     yarn cache clean
 
-FROM node:$NODE_VERSION
+FROM node:$NODE_VERSION-alpine
 
 COPY --from=theia /home/theia /home/theia
 
