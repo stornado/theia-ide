@@ -1,4 +1,4 @@
-ARG NODE_VERSION=erbium-alpine3.12
+ARG NODE_VERSION=erbium
 
 FROM node:$NODE_VERSION as theia
 
@@ -8,8 +8,7 @@ ARG version=latest
 WORKDIR /home/theia
 
 ADD $version.package.json ./package.json
-RUN apk add --no-cache --virtual .gyp python make g++ && \
-    yarn --pure-lockfile && \
+RUN yarn --pure-lockfile && \
     NODE_OPTIONS="--max_old_space_size=4096" yarn theia build && \
     yarn theia download:plugins && \
     yarn --production && \
@@ -18,8 +17,7 @@ RUN apk add --no-cache --virtual .gyp python make g++ && \
     echo *.ts.map >> .yarnclean && \
     echo *.spec.* >> .yarnclean && \
     yarn autoclean --force && \
-    yarn cache clean && \
-    apk del .gyp
+    yarn cache clean
 
 FROM node:$NODE_VERSION
 
