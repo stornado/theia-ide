@@ -52,7 +52,8 @@ ENV PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 RUN curl -fsSL https://storage.googleapis.com/golang/go$GO_VERSION.$GOOS-$GOARCH.tar.gz | tar -C /home -xzv && \
     export GOROOT=/home/go && \
     export GOPATH=/home/go-tools && \
-    export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+    export PATH=$GOPATH/bin:$GOROOT/bin:$PATH && \
+    chmod +x $GOROOT/bin/go*
 
 # Install VS Code Go tools: https://github.com/Microsoft/vscode-go/blob/058eccf17f1b0eebd607581591828531d768b98e/src/goInstallTools.ts#L19-L45
 RUN go get -u -v github.com/mdempsky/gocode && \
