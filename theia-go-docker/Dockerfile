@@ -2,6 +2,8 @@ ARG NODE_VERSION=erbium
 
 FROM node:$NODE_VERSION-alpine as theia
 
+RUN apk add --no-cache make gcc g++ python
+
 ARG GITHUB_TOKEN
 ARG version=latest
 
@@ -46,7 +48,8 @@ ENV GO_VERSION=1.15 \
 ENV PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 
 # Install Go
-RUN curl -fsSL https://storage.googleapis.com/golang/go$GO_VERSION.$GOOS-$GOARCH.tar.gz | tar -C /home -xzv
+RUN apk add --no-cache curl && \
+    curl -fsSL https://storage.googleapis.com/golang/go$GO_VERSION.$GOOS-$GOARCH.tar.gz | tar -C /home -xzv
 
 # Install VS Code Go tools: https://github.com/Microsoft/vscode-go/blob/058eccf17f1b0eebd607581591828531d768b98e/src/goInstallTools.ts#L19-L45
 RUN go get -u -v github.com/mdempsky/gocode && \
