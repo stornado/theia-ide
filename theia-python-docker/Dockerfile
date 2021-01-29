@@ -1,6 +1,9 @@
-ARG NODE_VERSION=12.20.1
+ARG NODE_VERSION=erbium
 
-FROM node:${NODE_VERSION} as builder
+FROM node:${NODE_VERSION}-alpine as builder
+
+RUN apk add --no-cache make gcc g++ python
+
 ARG version=latest
 WORKDIR /home/theia
 ADD $version.package.json ./package.json
@@ -16,16 +19,16 @@ RUN yarn --pure-lockfile && \
     yarn autoclean --force && \
     yarn cache clean
 
-FROM node:${NODE_VERSION}
+FROM node:${NODE_VERSION}-alpine
 
 # Install Python 3 from source
 ARG VERSION=3.9.1
 
-RUN apt-get update \
-    && apt-get upgrade -y \
-    && apt-get install -y make build-essential libssl-dev \
-    && apt-get install -y libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
-    && apt-get install -y libncurses5-dev  libncursesw5-dev xz-utils tk-dev \
+RUN apk update --no-cache \
+    && apk upgrade --no-cache \
+    && apk add --no-cache make build-essential libssl-dev \
+    && apk add --no-cache libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
+    && apk add --no-cache libncurses5-dev  libncursesw5-dev xz-utils tk-dev \
     && wget https://www.python.org/ftp/python/$VERSION/Python-$VERSION.tgz \
     && tar xvf Python-$VERSION.tgz \
     && cd Python-$VERSION \
@@ -36,13 +39,13 @@ RUN apt-get update \
     && rm -rf Python-$VERSION \
     && rm Python-$VERSION.tgz
 
-RUN apt-get update \
-    && apt-get install -y python-dev python-pip \
+RUN apk update --no-cache \
+    && apk add --no-cache python-dev python-pip \
     && pip install --upgrade pip --user \
-    && apt-get install -y python3-dev python3-pip \
+    && apk add --no-cache python3-dev python3-pip \
     && pip3 install --upgrade pip --user \
     && pip3 install python-language-server flake8 autopep8 \
-    && apt-get install -y yarn \
+    && apk add --no-cache yarn \
     && apt-get clean \
     && apt-get auto-remove -y \
     && rm -rf /var/cache/apt/* \
