@@ -15,7 +15,6 @@ RUN yarn --pure-lockfile && \
     echo *.spec.* >> .yarnclean && \
     yarn autoclean --force && \
     yarn cache clean && \
-    rm -rf node_modules && \
     rm -rf .cache
 
 FROM node:${NODE_VERSION}

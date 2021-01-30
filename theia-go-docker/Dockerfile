@@ -20,7 +20,6 @@ RUN yarn --pure-lockfile && \
     echo *.spec.* >> .yarnclean && \
     yarn autoclean --force && \
     yarn cache clean && \
-    rm -rf node_modules && \
     rm -rf .cache
 
 FROM node:$NODE_VERSION-alpine
@@ -76,6 +75,11 @@ RUN apk add --no-cache \
     GOARCH="$(go env GOARCH)" \
     GOHOSTOS="$(go env GOHOSTOS)" \
     GOHOSTARCH="$(go env GOHOSTARCH)" \
+    \
+    GO_VERSION=1.15 \
+    GOROOT=/home/go \
+    GOPATH=/home/go-tools \
+    PATH=$GOPATH/bin:$GOROOT/bin:$PATH \
     ; \
     # also explicitly set GO386 and GOARM if appropriate
     # https://github.com/docker-library/golang/issues/184
@@ -159,10 +163,9 @@ RUN apk add --no-cache \
     /home/go/pkg/tool/*/api \
     /home/go/pkg/tool/*/go_bootstrap \
     /home/go/src/cmd/dist/dist \
-    ; \
     \
-    rm -rf /home/theia/.cache; \
-    rm -rf /home/theia/node_modules; \
+    /home/theia/.cache \
+    ; \
     go version
 
 USER theia
