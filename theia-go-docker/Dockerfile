@@ -20,7 +20,8 @@ RUN yarn --pure-lockfile && \
     echo *.spec.* >> .yarnclean && \
     yarn autoclean --force && \
     yarn cache clean && \
-    rm -rf node_modules
+    rm -rf node_modules && \
+    rm -rf .cache
 
 FROM node:$NODE_VERSION-alpine
 
@@ -29,13 +30,13 @@ COPY --from=theia /home/theia /home/theia
 WORKDIR /home/theia
 
 
-ENV GOLANG_VERSION 1.15.7
-ENV GO_VERSION=1.15 \
-    GOOS=linux \
-    GOARCH=amd64 \
+ENV GOLANG_VERSION=1.15.7 \
+    GO_VERSION=1.15 \
+    \
     GOROOT=/home/go \
-    GOPATH=/home/go-tools
-ENV PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+    GOPATH=/home/go-tools \
+    \
+    PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 
 RUN apk add --no-cache \
     ca-certificates \
@@ -118,16 +119,6 @@ RUN apk add --no-cache \
     # go install: -race is only supported on linux/amd64, linux/ppc64le, linux/arm64, freebsd/amd64, netbsd/amd64, darwin/amd64 and windows/amd64
     #	go install -race std; \
     \
-    # remove a few intermediate / bootstrapping files the official binary release tarballs do not contain
-    rm -rf \
-    /home/go/pkg/*/cmd \
-    /home/go/pkg/bootstrap \
-    /home/go/pkg/obj \
-    /home/go/pkg/tool/*/api \
-    /home/go/pkg/tool/*/go_bootstrap \
-    /home/go/src/cmd/dist/dist \
-    ; \
-    \
     # Install VS Code Go tools: https://github.com/Microsoft/vscode-go/blob/058eccf17f1b0eebd607581591828531d768b98e/src/goInstallTools.ts#L19-L45
     go get -u -v github.com/mdempsky/gocode; \
     go get -u -v github.com/uudashr/gopkgs/cmd/gopkgs; \
@@ -160,6 +151,16 @@ RUN apk add --no-cache \
     \
     apk del --no-network .build-deps; \
     \
+    # remove a few intermediate / bootstrapping files the official binary release tarballs do not contain
+    rm -rf \
+    /home/go/pkg/*/cmd \
+    /home/go/pkg/bootstrap \
+    /home/go/pkg/obj \
+    /home/go/pkg/tool/*/api \
+    /home/go/pkg/tool/*/go_bootstrap \
+    /home/go/src/cmd/dist/dist \
+    ; \
+    \
     rm -rf /home/theia/.cache; \
     rm -rf /home/theia/node_modules; \
     go version
@@ -170,8 +171,9 @@ USER theia
 ENV SHELL=/bin/bash \
     THEIA_DEFAULT_PLUGINS=local-dir:/home/theia/plugins  \
     # Configure user Go path
-    GOPATH=/home/project
-ENV PATH=$PATH:$GOPATH/bin
+    GOPATH=/home/project \
+    \
+    PATH=$PATH:$GOPATH/bin
 
 EXPOSE 3000
 ENTRYPOINT [ "node", "/home/theia/src-gen/backend/main.js", "/home/project", "--hostname=0.0.0.0" ]

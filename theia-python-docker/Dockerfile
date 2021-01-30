@@ -36,9 +36,9 @@ RUN apt-get update \
     && make install \
     && cd .. \
     && rm -rf Python-$VERSION \
-    && rm Python-$VERSION.tgz
-
-RUN apt-get update \
+    && rm Python-$VERSION.tgz \
+    \
+    && apt-get update \
     && apt-get install -y python-dev python-pip \
     && pip install --upgrade pip --user \
     && apt-get install -y python3-dev python3-pip \
@@ -49,15 +49,17 @@ RUN apt-get update \
     && apt-get auto-remove -y \
     && rm -rf /var/cache/apt/* \
     && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /tmp/*
-
-RUN mkdir -p /home/theia \
+    && rm -rf /tmp/* \
+    \
+    && mkdir -p /home/theia \
     && mkdir -p /home/project
-ENV HOME /home/theia
+
 WORKDIR /home/theia
 COPY --from=builder /home/theia /home/theia
 EXPOSE 3000
 ENV SHELL=/bin/bash \
-    THEIA_DEFAULT_PLUGINS=local-dir:/home/theia/plugins
-ENV USE_LOCAL_GIT true
+    HOME=/home/theia \
+    THEIA_DEFAULT_PLUGINS=local-dir:/home/theia/plugins \
+    USE_LOCAL_GIT=true
+
 ENTRYPOINT [ "node", "/home/theia/src-gen/backend/main.js", "/home/project", "--hostname=0.0.0.0" ]
