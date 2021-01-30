@@ -19,7 +19,8 @@ RUN yarn --pure-lockfile && \
     echo *.ts.map >> .yarnclean && \
     echo *.spec.* >> .yarnclean && \
     yarn autoclean --force && \
-    yarn cache clean
+    yarn cache clean && \
+    rm -rf node_modules
 
 FROM node:$NODE_VERSION-alpine
 
@@ -158,6 +159,9 @@ RUN apk add --no-cache \
     go build -o $GOPATH/bin/gocode-gomod github.com/stamblerre/gocode; \
     \
     apk del --no-network .build-deps; \
+    \
+    rm -rf /home/theia/.cache; \
+    rm -rf /home/theia/node_modules; \
     go version
 
 USER theia

@@ -14,7 +14,9 @@ RUN yarn --pure-lockfile && \
     echo *.ts.map >> .yarnclean && \
     echo *.spec.* >> .yarnclean && \
     yarn autoclean --force && \
-    yarn cache clean
+    yarn cache clean && \
+    rm -rf node_modules && \
+    rm -rf .cache
 
 FROM node:${NODE_VERSION}
 
