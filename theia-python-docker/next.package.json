@@ -43,7 +43,6 @@
     "vscode-builtin-debug-server-ready": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/debug-server-ready-1.39.1-prel.vsix",
     "vscode-builtin-docker": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/docker-1.39.1-prel.vsix",
     "vscode-builtin-emmet": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/emmet-1.39.1-prel.vsix",
-    "vscode-builtin-extension-editing": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/extension-editing-1.39.1-prel.vsix",
     "vscode-builtin-git": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/git-1.39.1-prel.vsix",
     "vscode-builtin-git-ui": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/git-ui-1.39.1-prel.vsix",
     "vscode-builtin-go": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/go-1.39.1-prel.vsix",
