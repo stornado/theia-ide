@@ -39,6 +39,8 @@ ENV GOLANG_VERSION=1.15.7 \
 
 RUN apk add --no-cache \
     ca-certificates \
+    bash \
+    openssh \
     git; \
     \
     # See: https://github.com/theia-ide/theia-apps/issues/34
