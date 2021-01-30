@@ -30,14 +30,18 @@ jobs:
               with:
                   context: theia-go-docker
                   push: true
-                  tags: zxytech/theia-ide:go-latest
+                  tags: zxytech/theia-ide:go-next
+                  build-args: |
+                    version=next
 
             - name: Build and push theia python Docker images
               uses: docker/build-push-action@v2
               with:
                   context: theia-python-docker
                   push: true
-                  tags: zxytech/theia-ide:python-latest
+                  tags: zxytech/theia-ide:python-next
+                  build-args: |
+                    version=next
 
             - name: Image digest
               run: echo ${{ steps.docker_build.outputs.digest }}
