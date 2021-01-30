@@ -49,6 +49,7 @@ RUN apk add --no-cache \
     mkdir -p /home/project; \
     mkdir -p /home/go; \
     mkdir -p /home/go-tools; \
+    echo "export PATH=/home/project/bin:/home/go-tools/bin:/home/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" >> /home/theia/.profile; \
     chown -R theia:theia /home/theia; \
     chown -R theia:theia /home/project; \
     chown -R theia:theia /home/go; \
@@ -81,7 +82,9 @@ RUN apk add --no-cache \
     GO_VERSION=1.15 \
     GOROOT=/home/go \
     GOPATH=/home/go-tools \
-    PATH=$GOPATH/bin:$GOROOT/bin:$PATH \
+    ; \
+    echo "export PATH=/home/go-tools/bin:/home/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" >> /etc/profile; \
+    export PATH=$GOPATH/bin:$GOROOT/bin:$PATH \
     ; \
     # also explicitly set GO386 and GOARM if appropriate
     # https://github.com/docker-library/golang/issues/184
@@ -178,7 +181,8 @@ ENV SHELL=/bin/bash \
     # Configure user Go path
     GOPATH=/home/project \
     \
-    PATH=$PATH:$GOPATH/bin
+    PATH=$GOPATH/bin:$PATH \
+    USE_LOCAL_GIT=true
 
 EXPOSE 3000
 ENTRYPOINT [ "node", "/home/theia/src-gen/backend/main.js", "/home/project", "--hostname=0.0.0.0" ]
