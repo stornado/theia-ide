@@ -1,4 +1,4 @@
-name: CI
+name: CI Theia IDE Python next
 
 on:
   push:

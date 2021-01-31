@@ -1,4 +1,4 @@
-name: CI
+name: CI Theia IDE Go next
 
 on:
   push:
