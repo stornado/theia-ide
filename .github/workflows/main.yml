@@ -25,6 +25,15 @@ jobs:
                   password: ${{ secrets.DOCKERHUB_TOKEN }}
                   logout: false
 
+            - name: Build and push theia Docker images
+              uses: docker/build-push-action@v2
+              with:
+                  context: theia-docker
+                  push: true
+                  tags: zxytech/theia-ide:next
+                  build-args: |
+                    version=next
+
             - name: Build and push theia go Docker images
               uses: docker/build-push-action@v2
               with:
