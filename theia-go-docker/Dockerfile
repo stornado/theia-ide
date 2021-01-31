@@ -50,6 +50,9 @@ RUN apk add --no-cache \
     mkdir -p /home/go; \
     mkdir -p /home/go-tools; \
     echo "export PATH=/home/project/bin:/home/go-tools/bin:/home/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" >> /home/theia/.profile; \
+    echo "source /etc/profile" >> /home/theia/.bashrc; \
+    echo "source /home/theia/.profile" >> /home/theia/.bashrc; \
+    \
     chown -R theia:theia /home/theia; \
     chown -R theia:theia /home/project; \
     chown -R theia:theia /home/go; \

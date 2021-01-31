@@ -27,7 +27,9 @@ RUN apk add --no-cache git openssh bash tig curl && \
     chmod g+rw /home && \
     mkdir -p /home/project && \
     chown -R theia:theia /home/theia && \
-    chown -R theia:theia /home/project;
+    chown -R theia:theia /home/project && \
+    \
+    echo "source /etc/profile" >> /home/theia/.bashrc;
 
 ENV HOME /home/theia
 WORKDIR /home/theia

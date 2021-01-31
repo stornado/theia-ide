@@ -51,7 +51,8 @@ RUN apt-get update \
     && rm -rf /tmp/* \
     \
     && mkdir -p /home/theia \
-    && mkdir -p /home/project
+    && mkdir -p /home/project \
+    && echo "source /etc/profile" >> /home/theia/.bashrc
 
 WORKDIR /home/theia
 COPY --from=builder /home/theia /home/theia
