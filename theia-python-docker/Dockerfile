@@ -1,10 +1,12 @@
 ARG NODE_VERSION=erbium
 
 FROM node:${NODE_VERSION} as builder
+
 ARG version=latest
 WORKDIR /home/theia
 ADD $version.package.json ./package.json
 ARG GITHUB_TOKEN
+
 RUN yarn --pure-lockfile && \
     NODE_OPTIONS="--max_old_space_size=4096" yarn theia build && \
     yarn theia download:plugins && \
@@ -56,7 +58,9 @@ RUN apt-get update \
 
 WORKDIR /home/theia
 COPY --from=builder /home/theia /home/theia
+
 EXPOSE 3000
+
 ENV SHELL=/bin/bash \
     HOME=/home/theia \
     THEIA_DEFAULT_PLUGINS=local-dir:/home/theia/plugins \

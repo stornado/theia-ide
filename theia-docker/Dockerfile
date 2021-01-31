@@ -1,10 +1,14 @@
 ARG NODE_VERSION=erbium
+
 FROM node:${NODE_VERSION}-alpine as builder
+
 RUN apk add --no-cache make pkgconfig gcc g++ python libx11-dev libxkbfile-dev
+
 ARG version=latest
 WORKDIR /home/theia
 ADD $version.package.json ./package.json
 ARG GITHUB_TOKEN
+
 RUN yarn --pure-lockfile && \
     NODE_OPTIONS="--max_old_space_size=4096" yarn theia build && \
     yarn theia download:plugins && \
