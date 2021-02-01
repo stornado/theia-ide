@@ -161,6 +161,8 @@ RUN apk add --no-cache \
     go get -u -v -d github.com/stamblerre/gocode; \
     go build -o $GOPATH/bin/gocode-gomod github.com/stamblerre/gocode; \
     \
+    GO111MODULE=on go get -u -v golang.org/x/tools/gopls; \
+    \
     apk del --no-network .build-deps; \
     \
     # remove a few intermediate / bootstrapping files the official binary release tarballs do not contain
