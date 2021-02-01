@@ -54,6 +54,8 @@ RUN apt-get update \
     \
     && mkdir -p /home/theia \
     && mkdir -p /home/project \
+    \
+    && echo "export PATH=\$PATH:/bin:/sbin" >> /home/theia/.bashrc \
     && echo "source /etc/profile" >> /home/theia/.bashrc
 
 WORKDIR /home/theia
