@@ -1,0 +1,38 @@
+name: CI Theia IDE java next
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: zxytech
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          logout: false
+
+      - name: Build and push theia java Docker images
+        uses: docker/build-push-action@v2
+        with:
+          context: theia-java-docker
+          push: true
+          tags: zxytech/theia-ide:java-next
+          build-args: |
+            version=next
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
