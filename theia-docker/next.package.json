@@ -11,15 +11,10 @@
     }
   },
   "dependencies": {
-    "@theia/cli": "next",
     "@theia/editor-preview": "next",
     "@theia/getting-started": "next",
     "@theia/git": "next",
-    "@theia/outline-view": "next",
-    "@theia/plugin-ext": "next",
     "@theia/preview": "next",
-    "@theia/process": "next",
-    "@theia/scm-extra": "next",
     "@theia/vsx-registry": "next"
   },
   "devDependencies": {

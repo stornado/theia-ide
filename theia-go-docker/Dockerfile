@@ -29,7 +29,7 @@ COPY --from=theia /home/theia /home/theia
 WORKDIR /home/theia
 
 
-ENV GOLANG_VERSION=1.15.7 \
+ENV GOLANG_VERSION=1.15.8 \
     GO_VERSION=1.15 \
     \
     GOROOT=/home/go \
@@ -99,8 +99,8 @@ RUN apk add --no-cache \
     esac; \
     \
     # https://github.com/golang/go/issues/38536#issuecomment-616897960
-    url='https://storage.googleapis.com/golang/go1.15.7.src.tar.gz'; \
-    sha256='8631b3aafd8ecb9244ec2ffb8a2a8b4983cf4ad15572b9801f7c5b167c1a2abc'; \
+    url='https://storage.googleapis.com/golang/go1.15.8.src.tar.gz'; \
+    sha256='540c0ab7781084d124991321ed1458e479982de94454a98afab6acadf38497c2'; \
     \
     wget -O go.tgz.asc "$url.asc"; \
     wget -O go.tgz "$url"; \
