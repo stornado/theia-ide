@@ -21,6 +21,6 @@ RUN set -x; \
     export JAVA_HOME=$JAVA_HOME \
     LANG=$LANG;
 
-WORKDIR /home/project
+WORKDIR /home/theia
 USER theia
 ENTRYPOINT [ "node", "/home/theia/src-gen/backend/main.js", "/home/project", "--hostname=0.0.0.0" ]
