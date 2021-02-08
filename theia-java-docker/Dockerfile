@@ -11,6 +11,7 @@ ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk \
 
 RUN set -x; \
     apk add --no-cache openjdk8="$JAVA_ALPINE_VERSION"; \
+    apk add --no-cache maven gradle; \
     \
     apk add --no-cache --virtual .build-deps tzdata; \
     echo "Asia/Shanghai" > /etc/timezone; \
