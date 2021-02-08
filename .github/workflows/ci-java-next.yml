@@ -1,4 +1,4 @@
-name: CI Theia IDE java next
+name: CI Theia IDE Java next
 
 on:
   push:
