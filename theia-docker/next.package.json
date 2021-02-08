@@ -11,6 +11,8 @@
     }
   },
   "dependencies": {
+    "typescript": "next",
+    "@theia/typescript": "next",
     "@theia/editor-preview": "next",
     "@theia/getting-started": "next",
     "@theia/git": "next",
