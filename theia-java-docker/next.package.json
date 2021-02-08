@@ -12,7 +12,6 @@
     },
     "dependencies": {
       "@theia/editor-preview": "next",
-      "@theia/languages": "next",
       "@theia/getting-started": "next",
       "@theia/git": "next",
       "@theia/preview": "next",
