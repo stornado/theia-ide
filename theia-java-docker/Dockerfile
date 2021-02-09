@@ -28,10 +28,7 @@ ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk \
     JAVA_VERSION=8u272 \ 
     JAVA_ALPINE_VERSION=8.272.10-r4 \ 
     LANG=C.UTF-8 \
-    HOME=/home/theia \
-    SHELL=/bin/bash \
-    THEIA_DEFAULT_PLUGINS=local-dir:/home/theia/plugins \
-    USE_LOCAL_GIT=true
+    HOME=/home/theia
 
 # See : https://github.com/theia-ide/theia-apps/issues/34
 RUN apk add --no-cache \
@@ -54,6 +51,7 @@ RUN apk add --no-cache \
     apk del --no-network .build-deps; \
     \
     export JAVA_HOME=$JAVA_HOME \
+    PATH=$PATH \
     LANG=$LANG; \
     addgroup theia; \
     adduser -G theia -s /bin/bash -D theia; \
@@ -70,4 +68,10 @@ COPY --from=builder --chown=theia:theia /home/theia /home/theia
 
 EXPOSE 3000
 USER theia
+
+# Configure Theia
+ENV SHELL=/bin/bash \
+    THEIA_DEFAULT_PLUGINS=local-dir:/home/theia/plugins  \
+    USE_LOCAL_GIT=true
+
 ENTRYPOINT [ "node", "/home/theia/src-gen/backend/main.js", "/home/project", "--hostname=0.0.0.0" ]
