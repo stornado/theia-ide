@@ -1,77 +1,35 @@
-ARG NODE_VERSION=erbium
-
-FROM node:${NODE_VERSION}-alpine as builder
-
-RUN apk add --no-cache make pkgconfig gcc g++ python libx11-dev libxkbfile-dev
-
 ARG version=latest
-WORKDIR /home/theia
-ADD $version.package.json ./package.json
-ARG GITHUB_TOKEN
+FROM zxytech/theia-ide:${version}
 
-RUN yarn --pure-lockfile && \
-    NODE_OPTIONS="--max_old_space_size=4096" yarn theia build && \
-    yarn theia download:plugins && \
-    yarn --production && \
-    yarn autoclean --init && \
-    echo *.ts >> .yarnclean && \
-    echo *.ts.map >> .yarnclean && \
-    echo *.spec.* >> .yarnclean && \
-    yarn autoclean --force && \
-    yarn cache clean && \
-    rm -rf .cache
-
-FROM node:${NODE_VERSION}-alpine
+USER root
 
 ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk \
     PATH=$PATH:$JAVA_HOME/jre/bin:$JAVA_HOME/bin \
-    JAVA_VERSION=8u272 \ 
-    JAVA_ALPINE_VERSION=8.272.10-r4 \ 
-    LANG=C.UTF-8 \
-    HOME=/home/theia
+    LANG=C.UTF-8
 
-# See : https://github.com/theia-ide/theia-apps/issues/34
-RUN apk add --no-cache \
-    git \
-    git-flow \
-    tig \
-    bash \
-    bash-completion \
-    git-bash-completion \
-    tree \
-    curl \
-    \
-    openjdk8="$JAVA_ALPINE_VERSION" \
-    maven \
-    gradle \
+RUN set -x; \
+    apk add --no-cache \
+    bash=5.1.0-r0 \
+    bash-completion=2.11-r2 \
+    git=2.30.1-r0 \
+    tig=2.5.1-r0 \
+    git-bash-completion=2.30.1-r0 \
+    git-flow=1.12.3-r0 \
+    git-lfs=2.13.1-r0 \
+    openssl=1.1.1i-r0 \
+    curl=7.74.0-r0 \
+    unzip=6.0-r8 \
+    openjdk8=8.272.10-r4 \
+    maven=3.6.3-r0 \
+    gradle=6.7.1-r0 \
     ; \
-    apk add --no-cache --virtual .build-deps tzdata; \
+    apk add --no-cache --virtual .build-deps tzdata=2021a-r0; \
     echo "Asia/Shanghai" > /etc/timezone; \
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime; \
     apk del --no-network .build-deps; \
     \
     export JAVA_HOME=$JAVA_HOME \
-    PATH=$PATH \
-    LANG=$LANG; \
-    addgroup theia; \
-    adduser -G theia -s /bin/bash -D theia; \
-    \
-    chmod g+rw /home; \
-    mkdir -p /home/project; \
-    chown -R theia:theia /home/theia; \
-    chown -R theia:theia /home/project; \
-    \
-    echo "source /etc/profile" >> /home/theia/.bashrc;
+    LANG=$LANG;
 
-WORKDIR /home/theia
-COPY --from=builder --chown=theia:theia /home/theia /home/theia
-
-EXPOSE 3000
 USER theia
-
-# Configure Theia
-ENV SHELL=/bin/bash \
-    THEIA_DEFAULT_PLUGINS=local-dir:/home/theia/plugins  \
-    USE_LOCAL_GIT=true
-
 ENTRYPOINT [ "node", "/home/theia/src-gen/backend/main.js", "/home/project", "--hostname=0.0.0.0" ]
