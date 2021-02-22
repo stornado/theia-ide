@@ -32,4 +32,3 @@ RUN set -x; \
     LANG=$LANG;
 
 USER theia
-ENTRYPOINT [ "node", "/home/theia/src-gen/backend/main.js", "/home/project", "--hostname=0.0.0.0" ]
