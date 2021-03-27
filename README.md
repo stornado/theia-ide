@@ -1,5 +1,9 @@
 # theia-ide
 
+[Official Images](https://hub.docker.com/u/theiaide)
+
+https://theia-ide.org/
+
 ## Theia Go Docker
 
 Run on http://localhost:3000 with the current directory as a workspace:
